@@ -1,0 +1,86 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs
+*.log
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# System Files
+Thumbs.db
+Desktop.ini
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Environment files
+.env
+.env.*
+
+# Build output
+/dist/
+/build/
+/out/
+coverage/
+
+# Dependency directories
+jspm_packages/
+bower_components/
+
+# Misc
+*.tgz
+*.gz
+*.zip
+*.swp
+*.bak
+*.tmp
+
+# TypeScript
+*.tsbuildinfo
+
+# Next.js
+.next/
+
+# Expo
+.expo/
+.expo-shared/
+
+# React Native
+*.keystore
+*.jks
+
+# Svelte
+.svelte-kit/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Ruby
+*.gem
+.bundle/
+
+# PHP
+/vendor/
+composer.lock
+
+# JetBrains
+*.iml
+.idea/
+
+# VS Code
+.history/
+
+# Test output
+junit.xml 
