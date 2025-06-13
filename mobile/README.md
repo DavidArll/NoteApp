@@ -1,28 +1,25 @@
 # NoteApp Mobile
 
-This folder contains a skeleton for a mobile application built with React Native (e.g. using Expo). The mobile app should mirror the web functionality:
-
-- Use the device microphone to capture meeting audio.
-- Transcribe speech to text.
-- Translate the text to a target language.
-- Display notes, key topics and suggestions in real time.
+This folder contains high-level guidance to build the mobile client in React Native (using Expo). The mobile app should record audio, send it to the backend and display transcripts, translations and summaries.
 
 ## Getting Started
 
-1. Install [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) and initialize a new project:
+1. Install [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) and create a new project:
 
 ```bash
 npm install -g expo-cli
 expo init NoteAppMobile
 ```
 
-2. Replace the generated `App.js` with an implementation similar to `web/script.js`, using packages like `expo-speech`, `react-native-voice` or other speech-to-text libraries.
+2. Add packages for audio recording and networking, e.g. `expo-av` for microphone access and `axios` for API calls.
 
-3. Run the app on your device:
+3. Implement logic similar to `web/script.js` to start/stop recording and send the audio buffer to `http://<your-server>/api/transcribe`. Use the responses from `/api/translate` and `/api/summarize` to populate the UI.
+
+4. Run the app:
 
 ```bash
 cd NoteAppMobile
 expo start
 ```
 
-This repository only provides a high level guide. You can extend the mobile app with the same features as the web version.
+The backend from this repository must be running and reachable from the device for transcription and translation.

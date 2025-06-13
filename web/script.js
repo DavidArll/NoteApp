@@ -1,9 +1,11 @@
 const toggleBtn = document.getElementById('toggle');
+const loadHistoryBtn = document.getElementById('loadHistory');
 const transcriptionDiv = document.getElementById('transcription');
 const translationDiv = document.getElementById('translation');
 const notesDiv = document.getElementById('notes');
 const summaryDiv = document.getElementById('summary');
 const suggestionsDiv = document.getElementById('suggestions');
+const historyDiv = document.getElementById('history');
 
 let listening = false;
 let recognition;
@@ -45,37 +47,48 @@ function addNote(text) {
 }
 
 async function translateText(text) {
-    // Placeholder for translation API. Replace with real service call.
     try {
-        const targetLang = 'es';
-        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`);
+        const res = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, target: 'es' })
+        });
         const data = await res.json();
-        const translated = data.responseData.translatedText;
-        translationDiv.textContent = `Translation: ${translated}`;
+        translationDiv.textContent = `Translation: ${data.translation}`;
     } catch (e) {
         console.error('Translation failed', e);
     }
 }
 
-function updateSummary() {
-    // Simple summary: most common words excluding stop words
-    const text = notes.join(' ').toLowerCase();
-    const words = text.match(/\b\w+\b/g) || [];
-    const stopWords = new Set(['the','is','at','which','on','and','a','to']);
-    const freq = {};
-    words.forEach(w => {
-        if (!stopWords.has(w)) {
-            freq[w] = (freq[w] || 0) + 1;
-        }
-    });
-    const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0,5);
-    summaryDiv.textContent = 'Key topics: ' + sorted.map(([w]) => w).join(', ');
+async function updateSummary() {
+    try {
+        const res = await fetch('/api/summarize', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: notes.join(' ') })
+        });
+        const data = await res.json();
+        summaryDiv.textContent = data.summary;
+    } catch (e) {
+        console.error('Summarization failed', e);
+    }
 }
 
 function updateSuggestions() {
-    // Placeholder suggestions
     suggestionsDiv.textContent = 'Suggestion: ask for clarification if something is unclear.';
 }
+
+async function loadHistory() {
+    try {
+        const res = await fetch('/api/history');
+        const history = await res.json();
+        historyDiv.innerHTML = '<h3>Call History</h3>' + history.map(h => `<pre>${new Date(h.timestamp).toLocaleString()}\n${h.summary}</pre>`).join('');
+    } catch (e) {
+        console.error('Failed to load history', e);
+    }
+}
+
+loadHistoryBtn.addEventListener('click', loadHistory);
 
 toggleBtn.addEventListener('click', () => {
     if (!recognition) {
